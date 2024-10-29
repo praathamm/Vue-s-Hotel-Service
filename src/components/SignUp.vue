@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios';
 export default {
     name: 'SignUp',
     data() {
@@ -9,8 +10,19 @@ export default {
         }
     },
     methods: {
-        signup() {
-            alert(this.name)
+        async signup() {
+            let result = await axios.post("http://localhost:3000/user", {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+
+            });
+            console.warn(result)
+            if (result.status == 201) {
+                document.getElementById('submit').innerHTML = "Signed Up!";
+
+            }
+
         }
     }
 }
@@ -18,6 +30,7 @@ export default {
 
 
 <template>
+    
     <div class="signup-container">
         <!-- Background video -->
         <video class="background-video" autoplay muted loop>
@@ -37,7 +50,7 @@ export default {
                     <input type="text" v-model="name" placeholder="Enter name" required>
                     <input type="email" v-model="email" placeholder="Enter email" required>
                     <input type="password" v-model="password" placeholder="Enter password" required>
-                    <button v-on:click="signup()">Submit</button>
+                    <button id="submit" v-on:click="signup()">Submit</button>
 
 
 
@@ -71,13 +84,19 @@ export default {
 
 .background-video {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     z-index: -1;
     filter: brightness(50%) sepia(100%) hue-rotate(-50deg);
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .signup-card {
